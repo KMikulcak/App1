@@ -11,7 +11,7 @@ namespace App1
 {
     public partial class Page1 : ContentPage
     {
-        internal TestViewModel _viewModel;
+        internal TestViewModel ViewModel;
 
         internal Func<Task> RunAction { get; set; }
         public bool IsRunning { get; private set; }
@@ -19,13 +19,14 @@ namespace App1
 
         public Page1()
         {
-            _viewModel = new TestViewModel();
+            Debug.WriteLine("Page1.Ctor");
+            ViewModel = new TestViewModel();
             IsRunning = true;
             IsActivated = false;
-            BindingContext = _viewModel;
+            BindingContext = ViewModel;
             InitializeComponent();
             ItemListView.ItemTemplate = new DataTemplate(typeof(ItemListCell));
-            ItemListView.ItemsSource = _viewModel.ObservableItems;
+            ItemListView.ItemsSource = ViewModel.ObservableItems;
             RunAction = Run;
         }
 
@@ -33,8 +34,8 @@ namespace App1
         {
             while (true)
             {
-                Debug.WriteLine("ProductionViewModel.Refreshing");
-                await _viewModel.Refresh();
+                Debug.WriteLine("Page1.Refreshing");
+                await ViewModel.Refresh();
                 await Task.Delay(5000);
             }
         }
@@ -43,19 +44,19 @@ namespace App1
         {
             base.OnAppearing();
             await StartRefresh();
-            Debug.WriteLine("Base.OnAppearing");
+            Debug.WriteLine("Page1.OnAppearing");
         }
 
         protected override void OnDisappearing()
         {
-            //base.OnDisappearing();
+            base.OnDisappearing();
             StopRefresh();
-            Debug.WriteLine("Base.OnDisappearing");
+            Debug.WriteLine("Page1.OnDisappearing");
         }
 
         private async Task StartRefresh()
         {
-            Debug.WriteLine("Base.RefreshStart");
+            Debug.WriteLine("Page1.RefreshStart");
             IsRunning = true;
             if (IsActivated == false)
             {
@@ -69,7 +70,7 @@ namespace App1
 
         internal void StopRefresh()
         {
-            Debug.WriteLine("Base.RefreshStop");
+            Debug.WriteLine("Page1.RefreshStop");
             IsRunning = false;
         }
     }

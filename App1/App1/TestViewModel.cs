@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace App1
     {
         public TestViewModel()
         {
+            Debug.WriteLine("TestViewModel.Ctor");
             ObservableItems = new ObservableCollection<ItemListModel>();
         }
 
@@ -15,6 +17,7 @@ namespace App1
 
         public async Task Refresh()
         {
+            Debug.WriteLine("TestViewModel.Refresh");
             var items = await DataSource.GetItemList();
 
             foreach (var item in items)
